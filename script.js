@@ -101,5 +101,3 @@ const getPhotos2 = function () {
   };
 
   //remove/ hide pics of getphotos()
-
-//anyway, again, neat code, and also thank you, now i can load some cute random doggo pics instead of go search for them on Instagram 
