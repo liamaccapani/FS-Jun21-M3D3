@@ -13,5 +13,12 @@ const getPictures = function () {
     })
     .then(jsonResponse=> {
         console.log(jsonResponse)
-      })
+        const parentDiv = document.querySelector(".container .row")
+for (let photos of jsonResponse.photos){ 
+    console.log(parentDiv)
+    console.log(photos)
+}
+})
 } 
+
+
