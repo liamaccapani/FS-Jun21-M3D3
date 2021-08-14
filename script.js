@@ -43,65 +43,60 @@
   Documentation for the search endpoint: https://www.pexels.com/api/documentation/?language=javascript#photos-search
 */
 
-
 /* Useful:
  * `https://api.pexels.com/v1/search?query=${query}`
  * 563492ad6f91700001000001ac80369c68314994b36da40f5a0e98b0
  */
-
 
 // Global variables 🌍 //
 const loadImages = document.getElementById('load-btn')
 const loadSecondary = document.getElementById('load-secondary-btn')
 const row = document.querySelector('.album .row')
 
-
 ///////////////////////////////////////////////////////////////////////
 
 window.onload = () => {
-  loadImages.addEventListener('click', () => searchPhotos('colorful')) // ✨✨✨✨ () => 
-  loadSecondary.addEventListener('click', () => searchPhotos('puppy'))
+	loadImages.addEventListener('click', () => searchPhotos('colorful')) // ✨✨✨✨ () =>
+	loadSecondary.addEventListener('click', () => searchPhotos('dog'))
 }
 
-
 //Fetches && displays
-function searchPhotos (query){
-  fetch(`https://api.pexels.com/v1/search?query=${query}`, {
-    method: 'GET',
-    headers: {
-      Authorization: 'Bearer 563492ad6f91700001000001ac80369c68314994b36da40f5a0e98b0'
-    }
-  })
-  .then(response => response.json())
-  .then(jsonData => {
-    displayPhotos(jsonData) //object
-  })
-  .catch(error => console.log(error))
+function searchPhotos(query) {
+	fetch(`https://api.pexels.com/v1/search?query=${query}`, {
+		method: 'GET',
+		headers: {
+			Authorization:
+				'Bearer 563492ad6f91700001000001ac80369c68314994b36da40f5a0e98b0',
+		},
+	})
+		.then((response) => response.json())
+		.then((jsonData) => {
+			displayPhotos(jsonData) //object
+		})
+		.catch((error) => console.log(error))
 }
 
 //Creates card
 /* 📌 If we set row.innerHTML as blank we can then proceed to add the divs of the cards inside. When we click on another button, function is executed again and first thing first sets innerHTMl to blank (reset)
-* =>  with this structure we get a 'fresh' page for every button */
-function displayPhotos (objectData){
-  row.innerHTML = ''
-  objectData.photos.forEach(photo => {
-    const card = `
+ * =>  with this structure we get a 'fresh' page for every button */
+function displayPhotos(objectData) {
+	row.innerHTML = ''
+	objectData.photos.forEach((photo) => {
+		const card = `
     <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <img src=${photo.src.landscape} alt="picture" />
+      <div class="card mb-4">
+        <img src="${photo.src.landscape}" alt="picture"/>
 
         <div class="card-body">
           <p class="card-text">
-            This is a wider card with supporting text below as a natural
-            lead-in to additional content. This content is a little bit
-            longer.
+            Photographer: ${photo.photographer}
           </p>
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">
+              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="viewPhoto(event)" data-toggle="modal" data-target="#exampleModal">
                 View
               </button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">
+              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="removeCard(event)">
                 Hide
               </button>
             </div>
@@ -110,18 +105,18 @@ function displayPhotos (objectData){
         </div>
       </div>
     </div>
-    `;
-    row.innerHTML += card // ✨✨✨✨ no appendChild
-  });
+    `
+		row.innerHTML += card // ✨✨✨✨ no appendChild
+	})
 }
 
-
-// 📌 we deleted the structure from HTML and added the card dynamically with JavaScript. 
-// =>  with this structure we get images of 'load images' and 'load secondary' loaded down in the same page (there is nothing settin the row.innerHTML to blank, or resetting it)
-
-// const displayPhotos = function (objectData) { //✨✨✨✨
-//   for (let photo of objectData.photos) {
-//     row.innerHTML += `
+// 📌 we deleted the structure from HTML and added the card dynamically with JavaScript.
+// =>  with this structure we get images of 'load images' and 'load secondary' loaded down in the same page (there is nothing settin the row.innerHTML to blank, or resetting it) */
+/*
+//✨✨✨✨ objectData
+// const displayPhotos = function (objectData) { 
+// 	for (let photo of objectData.photos) {
+// 		row.innerHTML += `
 //         <div class="col-md-4">
 //             <div class="card mb-4 shadow-sm">
 //                 <img src=${photo.src.landscape} alt="picture">
@@ -146,8 +141,18 @@ function displayPhotos (objectData){
 //                 </div>
 //             </div>
 //         </div> <!--div col-->
-//         `;
-//   }
-// };
+//         `
+// 	}
+// }
+*/
 
-//remove/ hide pics of getphotos()
+function viewPhoto(e){
+  const modalContent = e.target.closest('.card').children[0].src
+  const modal = document.querySelector('.modal-body')
+  modal.innerHTML = `<img src="${modalContent}"/>`
+}
+
+function removeCard(e){
+  const card = e.target.closest('.card')
+  card.remove()
+}
